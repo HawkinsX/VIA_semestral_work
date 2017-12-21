@@ -16,8 +16,7 @@
   <h2>Shooting locations of actor</h2>
   <form  action="" method="post" role="form">
     {{ form.csrf }}
-    {{"decoupled-map"|googlemap_js(37.4419, -122.1419, varname="decoupledmap", markers=[(37.4419, -122.1419)])}}
-    {{mymap.js}}
+    {{ mymap.js }}
     <div class="form-group">
       <label for="name">Name of actor:</label>
       <input type="text" class="form-control" id="name" name="name" placeholder="Type name of some actor">
@@ -34,8 +33,7 @@
                 <div class="alert alert-info">
                 <strong>Success! </strong> {{ message[1] }}
                 </div>
-            <h2>My map</h2>
-            {{mymap.html}}
+                {{mymap.html}}
             {% endif %}
  
             {% if "Error" in message[1]: %}
