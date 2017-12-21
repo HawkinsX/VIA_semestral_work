@@ -6,5 +6,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="via_cv1" />
     <orderEntry type="module" module-name="via_cv1" />
+    <orderEntry type="module" module-name="via_cv2" />
   </component>
 </module>

@@ -1,0 +1,84 @@
+import urllib.request
+import json
+from time import sleep
+
+actor = "Yahya Abdul-Mateen II"
+
+actor = actor.replace(" ", "%20")
+
+print(actor)
+
+# find actor id by name
+with urllib.request.urlopen("http://api.tmdb.org/3/search/person?api_key=6d8563e95c7e67ee7fb0c4a1ce93416e&query=" + actor) as url:
+    data = json.loads(url.read().decode())
+
+id = -1
+
+if data["total_results"] == 0:
+    print("No results")
+else:
+    id = data["results"][0]["id"]
+    print(id)
+
+# get all movie of actor
+with urllib.request.urlopen("https://api.themoviedb.org/3/person/" + str(id) + "?api_key=6d8563e95c7e67ee7fb0c4a1ce93416e&append_to_response=credits") as url:
+    data = json.loads(url.read().decode())
+
+# list of movies where actor played
+movies = data["credits"]["cast"]
+
+locations = {}
+
+# go through all movies
+for movie in movies:
+    print(movie["title"])
+
+    # get details of movie
+    with urllib.request.urlopen("https://api.themoviedb.org/3/movie/" + str(movie["id"]) + "?api_key=6d8563e95c7e67ee7fb0c4a1ce93416e&language=en-US") as url:
+        movie_detail = json.loads(url.read().decode())
+
+    # go through countries where was this movie produced
+    for country in movie_detail["production_countries"]:
+        print(country["name"])
+
+        # if country is already in list of locations then add only name of this movie otherwise add this location
+        if country["name"] in locations:
+            locations[country["name"]].append(movie["title"])
+        else:
+            locations[country["name"]] = [movie["title"]]
+
+
+    print()
+
+
+print(locations)
+
+print()
+
+for country in locations:
+    print("Name of country: " + country + ":")
+
+    country_req = country.replace(" ", "%20")
+
+    with urllib.request.urlopen("http://maps.googleapis.com/maps/api/geocode/json?address=" + country_req + "") as url:
+        data = json.loads(url.read().decode())
+
+    if data["status"] == "OK":
+        lat = data["results"][0]["geometry"]["location"]["lat"]
+        long = data["results"][0]["geometry"]["location"]["lng"]
+        print("lat: " + str(lat))
+        print("long: " + str(long))
+    else:
+        print("Unknown country")
+
+    print(locations[country])
+    print()
+
+    sleep(0.1)
+
+    for i in locations[country]:
+        print(i)
+
+    # with urllib.request.urlopen("http://maps.googleapis.com/maps/api/geocode/json?address=germany") as url:
+#     data = json.loads(url.read().decode())
+#     print(data["results"]["geometry"])

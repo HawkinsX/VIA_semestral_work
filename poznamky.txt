@@ -1,7 +1,3 @@
-seznam filmù podle herce:
-https://stackoverflow.com/questions/11334646/api-to-get-list-of-movies-by-actor-or-director
-http://www.theimdbapi.org/api/find/person?name=jim+carrey
-
 zemìpisná šíøka a délka podle názvu státu:
 https://developers.google.com/maps/documentation/geocoding/intro
 http://maps.googleapis.com/maps/api/geocode/json?address=australia
@@ -13,6 +9,11 @@ Flask, wtforms a Bootstrap:
 https://pythonspot.com/flask-web-forms/
 
 Filmové databáze:
+
+seznam filmù podle herce:
+https://stackoverflow.com/questions/11334646/api-to-get-list-of-movies-by-actor-or-director
+http://www.theimdbapi.org/api/find/person?name=jim+carrey
+
 http://www.omdbapi.com/
                                    ID filmu    API key
 https://api.themoviedb.org/3/movie/784?api_key=6d8563e95c7e67ee7fb0c4a1ce93416e&language=en-US
