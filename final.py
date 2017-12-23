@@ -170,7 +170,7 @@ def hello():
             flash('Error: Input field is empty.')
 
     return render_template(
-        'hello.html',
+        'index.html',
         form=form,
         mymap=mymap
     )
