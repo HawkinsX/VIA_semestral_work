@@ -1,15 +1,19 @@
+
 from flask import Flask, render_template, flash, request
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
 
 from flask import Flask, render_template
+from flask_restful import Resource, Api
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map, icons
+from json import dumps as json_dumps
 
 import urllib.request
 import json
 from time import sleep
 
 app = Flask(__name__, template_folder="templates")
+api = Api(app)
 
 # you can set key as config
 app.config['GOOGLEMAPS_KEY'] = "AIzaSyCxpj954vbyCaxIYIYFqOAx-qHfNM9Zo-g"
@@ -84,6 +88,8 @@ def getMarkers(actor):
         print("Movie number: " + str(i))
         i = i+1
 
+        sleep(0.1)
+
     print(locations)
 
     print()
@@ -125,11 +131,11 @@ def getMarkers(actor):
 
         markers.append(marker)
 
-        sleep(0.5)
+        sleep(0.1)
 
     print(markers)
 
-    return 0, markers, name
+    return 0, markers, name, locations
 
 
 
@@ -154,10 +160,10 @@ def hello():
 
         if form.validate():
             # Save the comment here.
-            status, mymap.markers, getName = getMarkers(name)
+            status, mymap.markers, getName, locations = getMarkers(name)
             # mymap.markers = getMarkers(name)
 
-            if(status == 0):
+            if (status == 0):
                 flash('Map of countries, where were produced movies where ' + getName + ' played.')
 
             if (status == -1):
@@ -174,6 +180,17 @@ def hello():
         form=form,
         mymap=mymap
     )
+
+
+class Locations(Resource):
+    def get(self, actor):
+        status, markers, getName, locations = getMarkers(actor)
+        result = {"actor" : getName, "locations" : locations}
+
+        return result
+
+
+api.add_resource(Locations, '/locations/<actor>')
 
 
 if __name__ == "__main__":
